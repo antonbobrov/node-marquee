@@ -1,6 +1,6 @@
 {
   "name": "node-marquee",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Custom Marquee element with JavaScript",
   "main": "dist/index.js",
   "types": "dist/types/types.d.ts",
