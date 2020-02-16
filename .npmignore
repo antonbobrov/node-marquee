@@ -1,0 +1,14 @@
+.vscode
+
+demo/
+jsdoc/
+node_modules/
+src/
+webpack/
+
+.babelrc
+.eslintrc.json
+.gitignore
+.npmignore
+.sass-lint.yml
+package-lock.json
