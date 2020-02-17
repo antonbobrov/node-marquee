@@ -3,7 +3,7 @@ import element from "./element";
 
 /**
  * @typedef NodeMarqueeProp
- * @property {string|HTMLElement} [prop.selector=.marquee] The selector of the element or the elements itself.
+ * @property {string|HTMLElement} [prop.selector=.node-marquee] The selector of the element or the elements itself.
  * @property {number} [prop.speed=1] The amount of pixels to move with each frame.
  * @property {boolean} [prop.autoplay=true] If you want the marquee element to start moving after its initializing.
  */
