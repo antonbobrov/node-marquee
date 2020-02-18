@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const fileName = 'dist/types/types.d.ts';
-const str = 'export = ModuleName;\n\r';
+const str = 'export = nodeMarquee;\n\r';
 
 const data = fs.readFileSync(fileName);
 const fd = fs.openSync(fileName, 'w+');

@@ -2,14 +2,14 @@ import element from "./element";
 
 
 /**
- * @typedef NodeMarqueeProp
- * @property {string|HTMLElement} [prop.selector=.node-marquee] The selector of the element or the elements itself.
- * @property {number} [prop.speed=1] The amount of pixels to move with each frame.
- * @property {boolean} [prop.autoplay=true] If you want the marquee element to start moving after its initializing.
+ * @typedef Prop
+ * @property {string|HTMLElement} [selector=.node-marquee] The selector of the element or the elements itself.
+ * @property {number} [speed=1] The amount of pixels to move with each frame.
+ * @property {boolean} [autoplay=true] If you want the marquee element to start moving after its initializing.
  */
 
 /**
- * @typedef NodeMarqueeReturns
+ * @typedef Returns
  * @property {Function} play
  * @property {Function} pause
  */
@@ -18,8 +18,8 @@ import element from "./element";
  * @author Anthony Bobrov {@link https://github.com/antonbobrov/node-marquee.git| GitHub}
  * 
  * Custom Marquee element with JavaScript.
- * @param {NodeMarqueeProp} prop 
- * @returns {NodeMarqueeReturns} Returns a set of methods.
+ * @param {Prop} prop 
+ * @returns {Returns} Returns a set of methods.
  */
 function nodeMarquee(prop = {}) {
     
