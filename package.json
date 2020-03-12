@@ -3,6 +3,7 @@
   "version": "1.0.11",
   "description": "Custom Marquee element with JavaScript",
   "main": "dist/index.js",
+  "browser": "dist/cdn/index.js",
   "types": "dist/types/types.d.ts",
   "scripts": {
     "dev": "NODE_ENV=development webpack --config ./webpack/webpack.dev.conf.js",
@@ -11,8 +12,9 @@
     "docs": "npm run docs:default && npm run docs:types",
     "docs:default": "./node_modules/.bin/jsdoc -c jsdoc/jsdoc.json -R README.md",
     "docs:types": "./node_modules/.bin/jsdoc -c jsdoc/jsdoc.types.json && node jsdoc/exportJsDoc.js",
-    "prepare": "npm version patch && npm run prepare:cjs && npm run docs && npm run build",
+    "prepare": "npm version patch && npm run prepare:cjs && prepare:cdn && npm run docs && npm run build",
     "prepare:cjs": "NODE_ENV=cjs babel ./src --out-dir ./dist",
+    "prepare:cdn": "NODE_ENV=production webpack --config ./webpack/webpack.cdn.conf.js",
     "release": "npm publish"
   },
   "repository": {
