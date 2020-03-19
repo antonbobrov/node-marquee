@@ -2,9 +2,18 @@
 
 
 
-## How to start
+## Documentation: https://antonbobrov.github.io/node-marquee/
+
+
+
+## How to start with NPM
 ```sh
 npm install node-marquee
+```
+
+## How to start with CDN
+```html
+<script src="https://cdn.jsdelivr.net/npm/node-marquee/dist/cdn/index.min.js"></script>
 ```
 
 
@@ -15,6 +24,8 @@ npm install node-marquee
 ```
 ```js
 import nodeMarquee from 'node-marquee';
+```
+```js
 nodeMarquee({
     selector: '.node-marquee'
 });

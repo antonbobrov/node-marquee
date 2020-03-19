@@ -3,6 +3,7 @@
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const path = require('path');
 const webpack = require('webpack');
+const preamble = require('./preamble');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
@@ -64,7 +65,8 @@ module.exports = {
                     mangle: true,
                     output: {
                         beautify: false,
-                        comments: false
+                        comments: false,
+                        preamble: preamble
                     }
                 }
             })

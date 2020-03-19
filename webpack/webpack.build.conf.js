@@ -1,5 +1,6 @@
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
+const preamble = require('./preamble');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default
@@ -25,7 +26,8 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
                     mangle: true,
                     output: {
                         beautify: false,
-                        comments: false
+                        comments: false,
+                        preamble: preamble
                     }
                 }
             })
