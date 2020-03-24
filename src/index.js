@@ -56,9 +56,44 @@ function nodeMarquee(prop = {}) {
     const MIN_AMOUNT = 5;
 
 
+    
+    // observe changes in DOM
+    let observer = false;
+
+    function observeMutations() {
+
+        // observer config
+        const config = {
+            childList: true
+        }; 
+        // oserver callback
+        const callback = (mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    text = OUTER.innerText;
+                    create();
+                }
+            }
+        };
+        // create the observer
+        observer = new MutationObserver(callback);
+        observer.observe(OUTER, config);
+        
+    }
+    
+    function disconnectMutations() {
+        
+        if (observer) {
+            observer.disconnect();
+        }
+
+    }
+
+
 
     // create elements
     create();
+
     // add a resize event
     const RESIZE_LISTENER_FUNCTION = create.bind(this);
     window.addEventListener("resize", RESIZE_LISTENER_FUNCTION, false);
@@ -73,6 +108,9 @@ function nodeMarquee(prop = {}) {
 
     // Create elements
     function create() {
+
+        // disable mutation observer
+        disconnectMutations();
 
         // clear outer
         quantity = 0;
@@ -101,7 +139,11 @@ function nodeMarquee(prop = {}) {
             createElement(true, true);
         }
 
+        // redraw
         draw();
+
+        // enable mutation observer
+        observeMutations();
 
     }
 
@@ -194,10 +236,23 @@ function nodeMarquee(prop = {}) {
 
 
 
+    // Destroy the marquee
+    function destroy() {
+        
+        pause();
+        disconnectMutations();
+        
+        OUTER.innerHTML = text;
+
+    }
+
+
+
 
     return {
         play: play.bind(this),
-        pause: pause.bind(this)
+        pause: pause.bind(this),
+        destroy: destroy.bind(this)
     }
 
 
