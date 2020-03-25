@@ -3,7 +3,7 @@
   "version": "1.0.19",
   "description": "Custom Marquee element with JavaScript",
   "main": "dist/index.js",
-  "browser": "dist/cdn/index.js",
+  "jsdelivr": "dist/cdn/index.js",
   "types": "dist/types/types.d.ts",
   "scripts": {
     "dev": "NODE_ENV=development webpack --config ./webpack/webpack.dev.conf.js",
