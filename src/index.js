@@ -12,6 +12,8 @@ import element from "./element";
  * @typedef Returns
  * @property {Function} play
  * @property {Function} pause
+ * @property {Function} destroy
+ * @property {Function} render
  */
 
 /**
@@ -252,7 +254,8 @@ function nodeMarquee(prop = {}) {
     return {
         play: play.bind(this),
         pause: pause.bind(this),
-        destroy: destroy.bind(this)
+        destroy: destroy.bind(this),
+        render: render.bind(this)
     }
 
 
