@@ -6,6 +6,7 @@ import element from "./element";
  * @property {string|HTMLElement} [selector=.node-marquee] The selector of the element or the elements itself.
  * @property {number} [speed=1] The amount of pixels to move with each frame.
  * @property {boolean} [autoplay=true] If you want the marquee element to start moving after its initializing.
+ * @property {boolean} [pauseOnHover=false] Stop the marquee on hover.
  */
 
 /**
@@ -30,7 +31,8 @@ function nodeMarquee(prop = {}) {
     const DEFAULT_PROP = {
         selector: '.node-marquee',
         speed: 1,
-        autoplay: true
+        autoplay: true,
+        pauseOnHover: false
     };
     prop = Object.assign(DEFAULT_PROP, prop);
 
@@ -99,6 +101,22 @@ function nodeMarquee(prop = {}) {
     // add a resize event
     const RESIZE_LISTENER_FUNCTION = create.bind(this);
     window.addEventListener("resize", RESIZE_LISTENER_FUNCTION, false);
+
+    // add mouse enter events
+    const MOUSE_ENTER_LISTENER_FUNCTION = () => {
+        if (prop.pauseOnHover) {
+            pause();
+        }
+    };
+    OUTER.addEventListener("mouseenter", MOUSE_ENTER_LISTENER_FUNCTION, false);
+
+    // add mouse leave events
+    const MOUSE_LEAVE_LISTENER_FUNCTION = () => {
+        if (prop.pauseOnHover) {
+            play();
+        }
+    };
+    OUTER.addEventListener("mouseleave", MOUSE_LEAVE_LISTENER_FUNCTION, false);
 
     // animation frame
     let animationFrame = false;
@@ -245,6 +263,8 @@ function nodeMarquee(prop = {}) {
         disconnectMutations();
 
         window.removeEventListener("resize", RESIZE_LISTENER_FUNCTION, false);
+        OUTER.removeEventListener("mouseenter", MOUSE_ENTER_LISTENER_FUNCTION, false);
+        OUTER.removeEventListener("mouseleave", MOUSE_LEAVE_LISTENER_FUNCTION, false);
         
         OUTER.innerHTML = text;
 

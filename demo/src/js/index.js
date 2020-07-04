@@ -11,6 +11,13 @@ nodeMarquee({
     selector: '#node-marquee'
 });
 
+// try marquee that is paused on hover
+nodeMarquee({
+    speed: 2,
+    selector: '#node-marquee-pause',
+    pauseOnHover: true
+});
+
 
 
 // try observable marquee
