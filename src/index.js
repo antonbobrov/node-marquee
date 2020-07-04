@@ -243,6 +243,8 @@ function nodeMarquee(prop = {}) {
         
         pause();
         disconnectMutations();
+
+        window.removeEventListener("resize", RESIZE_LISTENER_FUNCTION, false);
         
         OUTER.innerHTML = text;
 
