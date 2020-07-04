@@ -22,7 +22,7 @@ import element from "./element";
  * 
  * Custom Marquee element with JavaScript.
  * @param {Prop} prop 
- * @returns {Returns} Returns a set of methods.
+ * @returns { Returns | false } Returns a set of methods.
  */
 function nodeMarquee(prop = {}) {
     
@@ -41,7 +41,7 @@ function nodeMarquee(prop = {}) {
     // check if the element exists
     const OUTER = element(prop.selector);
     if (OUTER == null) {
-        return false
+        return false;
     }
     OUTER.classList.add("node-marquee");
 

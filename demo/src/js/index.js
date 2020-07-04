@@ -33,5 +33,7 @@ setTimeout(() => {
 }, 2000);
 // and destroy
 setTimeout(() => {
-    observableMarquee.destroy();
+    if (observableMarquee) {
+        observableMarquee.destroy();
+    }
 }, 5000);
