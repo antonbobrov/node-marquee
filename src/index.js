@@ -55,7 +55,7 @@ function nodeMarquee(prop = {}) {
     // vars
     let translateX = 0,
         isPlaying = false;
-    const MIN_AMOUNT = 5;
+    const MIN_AMOUNT = 4;
 
 
     
@@ -131,7 +131,7 @@ function nodeMarquee(prop = {}) {
         // calculate how much elements we need to create in addition to the first one
         let width = firstEl.clientWidth;
         if (width < OUTER.clientWidth) {
-            quantity = Math.ceil(OUTER.clientWidth / width);
+            quantity = Math.ceil(OUTER.clientWidth * 1.5 / width);
         }
         if (quantity < MIN_AMOUNT) {
             quantity = MIN_AMOUNT;
