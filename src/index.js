@@ -8,6 +8,7 @@ import element from "./element";
  * @property {boolean} [autoplay=true] If you want the marquee element to start moving after its initializing.
  * @property {boolean} [pauseOnHover=false] Stop the marquee on hover.
  * @property { "innerHTML" | "innerText" } [source="innerHTML"] The source of text.
+ * @property { boolean } [applyOuterStyles=true] If you need to apply default style to the outer element.
  */
 
 /**
@@ -34,7 +35,8 @@ function nodeMarquee(prop = {}) {
         speed: 1,
         autoplay: true,
         pauseOnHover: false,
-        source: "innerHTML"
+        source: "innerHTML",
+        applyOuterStyles: true
     };
     prop = Object.assign(DEFAULT_PROP, prop);
 
@@ -140,10 +142,12 @@ function nodeMarquee(prop = {}) {
         OUTER.innerHTML = '';
 
         // apply styles to the outer
-        OUTER.style.position = 'relative';
-        OUTER.style.width = '100%';
-        OUTER.style.overflow = 'hidden';
-        OUTER.style.whiteSpace = 'nowrap';
+        if (prop.applyOuterStyles) {
+            OUTER.style.position = 'relative';
+            OUTER.style.width = '100%';
+            OUTER.style.overflow = 'hidden';
+            OUTER.style.whiteSpace = 'nowrap';
+        }
 
         // create first element
         let firstEl = createElement();
