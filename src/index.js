@@ -7,6 +7,7 @@ import element from "./element";
  * @property {number} [speed=1] The amount of pixels to move with each frame.
  * @property {boolean} [autoplay=true] If you want the marquee element to start moving after its initializing.
  * @property {boolean} [pauseOnHover=false] Stop the marquee on hover.
+ * @property { "innerHTML" | "innerText" } [source="innerHTML"] The source of text.
  */
 
 /**
@@ -32,7 +33,8 @@ function nodeMarquee(prop = {}) {
         selector: '.node-marquee',
         speed: 1,
         autoplay: true,
-        pauseOnHover: false
+        pauseOnHover: false,
+        source: "innerHTML"
     };
     prop = Object.assign(DEFAULT_PROP, prop);
 
@@ -48,7 +50,7 @@ function nodeMarquee(prop = {}) {
 
 
     // get inner text
-    let text = OUTER.innerText;
+    let text = prop.source == "innerHTML" ? OUTER.innerHTML : OUTER.innerText;
 
     // quantity of elements
     let quantity = 0,
