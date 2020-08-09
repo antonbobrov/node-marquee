@@ -42,6 +42,7 @@ speed | number | 1 | The amount of pixels to move with each frame.
 autoplay | boolean | true | If you want the marquee element to start moving after its initializing.
 pauseOnHover | boolean | false | Pause animation on mouse enter.
 source | "innerHTML" \| "innerText" | "innerHTML" | Text source.
+applyOuterStyles | boolean | true | If you need to apply default style to the outer element.
 
 
 
