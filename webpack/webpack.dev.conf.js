@@ -1,5 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 
 const devWebpackConfig = merge(baseWebpackConfig, {
@@ -10,7 +12,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
     watch: true,
     watchOptions: {
-        aggregateTimeout: 100
+        aggregateTimeout: 100,
     },
 
     devServer: {
@@ -18,22 +20,22 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         open: true,
         compress: true,
         disableHostCheck: true,
-        port: 8083,
-        host: '0.0.0.0',
+        port: 8080,
+        // host: "0.0.0.0",
         overlay: {
             warnings: true,
-            errors: true
+            errors: true,
         },
         headers: {
-            'Access-Control-Allow-Origin': '*'
-        }
+            'Access-Control-Allow-Origin': '*',
+        },
     },
 
     plugins: [
         new webpack.SourceMapDevToolPlugin({
-            filename: '[file].map'
-        })
-    ]
+            filename: '[file].map',
+        }),
+    ],
 
 });
 

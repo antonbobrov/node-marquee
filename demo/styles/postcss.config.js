@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 module.exports = {
     plugins: [
         require('autoprefixer'),
@@ -6,10 +7,10 @@ module.exports = {
             preset: [
                 'default', {
                     discardComments: {
-                        removeAll: true
-                    }
-                }
-            ]
+                        removeAll: true,
+                    },
+                },
+            ],
         }),
-    ]
-}
+    ],
+};

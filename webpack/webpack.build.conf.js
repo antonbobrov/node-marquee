@@ -1,9 +1,11 @@
-const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.base.conf');
-const preamble = require('./preamble');
+/* eslint-disable import/no-extraneous-dependencies */
+const { merge } = require('webpack-merge');
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack-plugin').default
+const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const preamble = require('./preamble');
+const baseWebpackConfig = require('./webpack.base.conf');
 
 const buildWebpackConfig = merge(baseWebpackConfig, {
 
@@ -13,37 +15,36 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
         minimize: true,
         concatenateModules: true,
         minimizer: [
-            new UglifyJsPlugin({
+            new TerserPlugin({
                 cache: true,
                 parallel: true,
-                uglifyOptions: {
+                terserOptions: {
                     compress: {
                         drop_console: false,
                         keep_fargs: false,
-                        passes: 2
+                        passes: 1,
                     },
                     ecma: 5,
                     mangle: true,
                     output: {
                         beautify: false,
                         comments: false,
-                        preamble: preamble
-                    }
-                }
-            })
+                        preamble,
+                    },
+                },
+            }),
         ],
         usedExports: true,
-        sideEffects: true
+        sideEffects: true,
     },
 
     plugins: [
-        new ImageminPlugin({
-            disable: false,
-            pngquant: {
-                quality: '95-100'
-            }
+        new CleanWebpackPlugin({
+            verbose: false,
+            cleanStaleWebpackAssets: true,
+            dry: false,
         }),
-    ]   
+    ],
 
 });
 

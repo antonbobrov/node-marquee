@@ -1,28 +1,26 @@
-'use strict';
+/* eslint-disable import/no-extraneous-dependencies */
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const path = require('path');
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const paths = require('./paths').PATHS;
 const preamble = require('./preamble');
-
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
-const PATHS = {
-    src: path.join(__dirname, '../cdn'),
-    public: path.join(__dirname, '../dist/cdn')
-};
 
 module.exports = {
 
     mode: 'production',
-    
+
     entry: {
-        index: PATHS.src + '/index.js'
-    }, 
+        index: `${paths.cdn.src}/index.ts`,
+    },
     output: {
-        filename: `[name].js`,
-        path: PATHS.public,
-        publicPath: '/'
+        filename: '[name].js',
+        path: paths.cdn.public,
+        publicPath: '/',
+    },
+
+    resolve: {
+        extensions: ['.ts', '.js', '.json'],
     },
 
     module: {
@@ -32,47 +30,47 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
-                options: {
-                    presets: [
-                        ['@babel/preset-env', { modules: false }]
-                    ]
-                }
-            }
-        ]
+            },
+            {
+                test: /\.ts?$/,
+                exclude: /node_modules/,
+                loaders: ['babel-loader', 'ts-loader'],
+            },
+        ],
 
     },
 
     plugins: [
         new webpack.DefinePlugin({
-            NODE_ENV: JSON.stringify(NODE_ENV)
-        })
+            NODE_ENV: JSON.stringify(NODE_ENV),
+        }),
     ],
 
     optimization: {
         minimize: true,
         concatenateModules: true,
         minimizer: [
-            new UglifyJsPlugin({
+            new TerserPlugin({
                 cache: true,
                 parallel: true,
-                uglifyOptions: {
+                terserOptions: {
                     compress: {
                         drop_console: false,
                         keep_fargs: false,
-                        passes: 1
+                        passes: 1,
                     },
                     ecma: 5,
                     mangle: true,
                     output: {
                         beautify: false,
                         comments: false,
-                        preamble: preamble
-                    }
-                }
-            })
+                        preamble,
+                    },
+                },
+            }),
         ],
         usedExports: true,
-        sideEffects: true
+        sideEffects: true,
     },
 
 };

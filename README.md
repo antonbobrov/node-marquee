@@ -1,6 +1,4 @@
-# Custom Marquee element with JavaScript.
-
-
+# Custom Marquee element
 
 ## Documentation: https://antonbobrov.github.io/node-marquee/
 

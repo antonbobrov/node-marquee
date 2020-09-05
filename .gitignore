@@ -1,7 +1,7 @@
 .vscode
 
-demo/public/
 dist/
 node_modules/
+public-demo/
 
 package-lock.json
