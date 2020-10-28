@@ -44,7 +44,7 @@ export interface NodeMarquee {
     /**
      * Render the marquee
      */
-    render: () => void;
+    render: (speed: number) => void;
     /**
      * Destroy and create
      */

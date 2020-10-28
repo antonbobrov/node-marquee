@@ -223,9 +223,11 @@ export default function nodeMarquee (
     }
 
     // Render the Marquee Elements
-    function renderElements () {
+    function renderElements (
+        speed = prop.speed,
+    ) {
 
-        translateX += prop.speed;
+        translateX += speed;
         let moveToEnd: (HTMLElement | false) = false;
 
         let w = 0;
