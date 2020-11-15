@@ -68,6 +68,7 @@
     "normalize-scss": "^7.0.1"
   },
   "dependencies": {
+    "typedoc-plugin-nojekyll": "^1.0.1",
     "vevet-dom": "0.0.13"
   }
 }
