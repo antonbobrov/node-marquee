@@ -69,6 +69,6 @@
     "normalize-scss": "^7.0.1"
   },
   "dependencies": {
-    "vevet-dom": "0.0.13"
+    "vevet-dom": "0.0.14"
   }
 }
