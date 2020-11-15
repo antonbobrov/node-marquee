@@ -1,4 +1,4 @@
-import { selectOne, isElement } from 'vevet-dom';
+import { selectOne, isElement, addEventListener } from 'vevet-dom';
 import { NodeMarqueeProp, NodeMarquee } from './types';
 
 export {
@@ -57,9 +57,6 @@ export default function nodeMarquee (
 
     // events
     let observer: false | MutationObserver = false;
-    const RESIZE_LISTENER_FUNCTION = createMarquee.bind(this);
-    const MOUSE_ENTER_LISTENER_FUNCTION = onMouseEnter.bind(this);
-    const MOUSE_LEAVE_LISTENER_FUNCTION = onMouseLeave.bind(this);
 
 
 
@@ -75,9 +72,9 @@ export default function nodeMarquee (
 
 
     // set events
-    window.addEventListener('resize', RESIZE_LISTENER_FUNCTION, false);
-    OUTER.addEventListener('mouseenter', MOUSE_ENTER_LISTENER_FUNCTION, false);
-    OUTER.addEventListener('mouseleave', MOUSE_LEAVE_LISTENER_FUNCTION, false);
+    const RESIZE_LISTENER = addEventListener(window, 'resize', createMarquee.bind(this));
+    const MOUSEENTER_LISTENER = addEventListener(OUTER, 'mouseenter', onMouseEnter.bind(this));
+    const MOUSELEAVE_LISTENER = addEventListener(OUTER, 'mouseleave', onMouseLeave.bind(this));
 
 
 
@@ -279,9 +276,9 @@ export default function nodeMarquee (
         pause();
         disconnectMutationsObserver();
 
-        window.removeEventListener('resize', RESIZE_LISTENER_FUNCTION, false);
-        OUTER.removeEventListener('mouseenter', MOUSE_ENTER_LISTENER_FUNCTION, false);
-        OUTER.removeEventListener('mouseleave', MOUSE_LEAVE_LISTENER_FUNCTION, false);
+        RESIZE_LISTENER.remove();
+        MOUSEENTER_LISTENER.remove();
+        MOUSELEAVE_LISTENER.remove();
 
         OUTER.innerHTML = text;
 
