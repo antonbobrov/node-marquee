@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -86,6 +84,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.nodemarqueeprop.html#applyouterstyles" class="tsd-kind-icon">apply<wbr>Outer<wbr>Styles</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.nodemarqueeprop.html#autoplay" class="tsd-kind-icon">autoplay</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.nodemarqueeprop.html#optimizecalculation" class="tsd-kind-icon">optimize<wbr>Calculation</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.nodemarqueeprop.html#pauseonhover" class="tsd-kind-icon">pause<wbr>OnHover</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.nodemarqueeprop.html#selector" class="tsd-kind-icon">selector</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.nodemarqueeprop.html#speed" class="tsd-kind-icon">speed</a></li>
@@ -102,7 +101,7 @@
 					<div class="tsd-signature tsd-kind-icon">apply<wbr>Outer<wbr>Styles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/829015e/src/ts/types.ts#L26">types.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/940fa31/src/ts/types.ts#L26">types.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -122,7 +121,7 @@
 					<div class="tsd-signature tsd-kind-icon">autoplay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/829015e/src/ts/types.ts#L16">types.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/940fa31/src/ts/types.ts#L16">types.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -137,12 +136,38 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="optimizecalculation" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> optimize<wbr>Calculation</h3>
+					<div class="tsd-signature tsd-kind-icon">optimize<wbr>Calculation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/940fa31/src/ts/types.ts#L37">types.ts:37</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>By default, the script copies the text and moves it. To calculate the transformations,
+								it needs to know the width of each element.
+								This very width is calculated with each animation frame
+								and in some cases may influence performance.
+								If you want to avoid this, set the property as &quot;true&quot;, and it won&#39;t recalculate
+								styles with each frame, though when changing styles of the marquee (f.e., font-size),
+							the marquee must be manually recreated.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p>false</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="pauseonhover" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> pause<wbr>OnHover</h3>
 					<div class="tsd-signature tsd-kind-icon">pause<wbr>OnHover<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/829015e/src/ts/types.ts#L21">types.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/940fa31/src/ts/types.ts#L21">types.ts:21</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -162,7 +187,7 @@
 					<div class="tsd-signature tsd-kind-icon">selector<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/829015e/src/ts/types.ts#L6">types.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/940fa31/src/ts/types.ts#L6">types.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -182,7 +207,7 @@
 					<div class="tsd-signature tsd-kind-icon">speed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/829015e/src/ts/types.ts#L11">types.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/antonbobrov/node-marquee/blob/940fa31/src/ts/types.ts#L11">types.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -229,6 +254,9 @@
 								<a href="_types_.nodemarqueeprop.html#autoplay" class="tsd-kind-icon">autoplay</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.nodemarqueeprop.html#optimizecalculation" class="tsd-kind-icon">optimize<wbr>Calculation</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_types_.nodemarqueeprop.html#pauseonhover" class="tsd-kind-icon">pause<wbr>OnHover</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -246,7 +274,7 @@
 		</div>
 	</div>
 </div>
-<footer>
+<footer class="with-border-bottom">
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
@@ -260,6 +288,9 @@
 		</div>
 	</div>
 </footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
 </body>
