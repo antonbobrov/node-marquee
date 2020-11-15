@@ -24,6 +24,17 @@ export interface NodeMarqueeProp {
      * @default true
      */
     applyOuterStyles?: boolean;
+    /**
+     * By default, the script copies the text and moves it. To calculate the transformations,
+     * it needs to know the width of each element.
+     * This very width is calculated with each animation frame
+     * and in some cases may influence performance.
+     * If you want to avoid this, set the property as "true", and it won't recalculate
+     * styles with each frame, though when changing styles of the marquee (f.e., font-size),
+     * the marquee must be manually recreated.
+     * @default false
+     */
+    optimizeCalculation?: boolean;
 }
 
 
@@ -49,6 +60,10 @@ export interface NodeMarquee {
      * Destroy and create
      */
     recreate: () => void;
+    /**
+     * Update sizes of the marquee (manually)
+     */
+    updateSizes: () => void;
     /**
      * Destroy the marquee
      */

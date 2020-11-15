@@ -16,6 +16,7 @@ export default function nodeMarquee (
 ): (NodeMarquee | false) {
 
     const className = 'node-marquee';
+    let destroyed = false;
 
     // default properties
     const DEFAULT_PROP: NodeMarqueeProp = {
@@ -24,6 +25,7 @@ export default function nodeMarquee (
         autoplay: true,
         pauseOnHover: false,
         applyOuterStyles: true,
+        optimizeCalculation: false,
     };
     // extend properties
     prop = Object.assign(DEFAULT_PROP, prop);
@@ -47,6 +49,7 @@ export default function nodeMarquee (
     // quantity of elements
     let quantity = 0;
     let elements: HTMLElement[] = [];
+    let elementsWidth: number[] = [];
 
     // vars
     let translateX = 0;
@@ -87,6 +90,7 @@ export default function nodeMarquee (
         // clear the outer element
         quantity = 0;
         elements = [];
+        elementsWidth = [];
         OUTER.innerHTML = '';
 
         // apply styles to the outer
@@ -99,14 +103,13 @@ export default function nodeMarquee (
 
         // create the first element
         const firstEl = createElement();
-
-        // calculate how much elements we need to create in addition to the first one
-        let width = firstEl.clientWidth;
-        if (width <= 0) {
-            width = window.innerWidth;
+        let firstElWidth = firstEl.clientWidth;
+        if (firstElWidth <= 0) {
+            firstElWidth = window.innerWidth;
         }
-        if (width < OUTER.clientWidth) {
-            quantity = Math.ceil(OUTER.clientWidth * 1.5 / width);
+        // calculate how much elements we need to create in addition to the first one
+        if (firstElWidth < OUTER.clientWidth) {
+            quantity = Math.ceil(OUTER.clientWidth * 1.5 / firstElWidth);
         }
         if (quantity < MIN_AMOUNT) {
             quantity = MIN_AMOUNT;
@@ -116,11 +119,21 @@ export default function nodeMarquee (
             createElement(true, true);
         }
 
+        // update sizes of the elements
+        updateSizes();
+
         // render
         renderElements();
 
         // enable mutation observer
         observeMutations();
+
+        // and to be sure, update sizes once more
+        if (prop.optimizeCalculation) {
+            setTimeout(() => {
+                updateSizes();
+            }, 500);
+        }
 
     }
 
@@ -228,15 +241,24 @@ export default function nodeMarquee (
         let moveToEnd: (HTMLElement | false) = false;
 
         let w = 0;
+        // render elements
         for (let i = 0; i < quantity; i++) {
 
             const el = elements[i];
 
-            const t = w - translateX;
-            w += el.clientWidth;
+            // get width of the current element
+            if (!prop.optimizeCalculation) {
+                elementsWidth[i] = el.clientWidth;
+            }
+            const elWidth = elementsWidth[i];
 
+            // calulate transforms
+            const t = w - translateX;
+            w += elWidth;
+
+            // apply transforms
             el.style.transform = `translate(${t}px, 0)`;
-            if (t < el.clientWidth * -1) {
+            if (t < elWidth * -1) {
                 moveToEnd = el;
             }
 
@@ -245,6 +267,27 @@ export default function nodeMarquee (
         if (moveToEnd) {
             elements.push(elements.splice(elements.indexOf(moveToEnd), 1)[0]);
             translateX -= moveToEnd.clientWidth;
+            if (prop.optimizeCalculation) {
+                updateSizes();
+            }
+        }
+
+    }
+
+    // Update elements' width
+    function updateSizes () {
+
+        if (destroyed) {
+            return;
+        }
+
+        for (let i = 0; i < quantity; i++) {
+            let width = elements[i].clientWidth;
+            width = elements[i].clientWidth;
+            if (width <= 0) {
+                width = window.innerWidth;
+            }
+            elementsWidth[i] = width;
         }
 
     }
@@ -273,6 +316,8 @@ export default function nodeMarquee (
     // Destroy the marquee
     function destroy () {
 
+        destroyed = true;
+
         pause();
         disconnectMutationsObserver();
 
@@ -292,6 +337,7 @@ export default function nodeMarquee (
         isPlaying: () => isPlaying,
         render: renderElements.bind(this),
         recreate: createMarquee.bind(this),
+        updateSizes: updateSizes.bind(this),
         destroy: destroy.bind(this),
     };
 
