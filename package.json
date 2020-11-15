@@ -1,6 +1,6 @@
 {
   "name": "node-marquee",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Custom Marquee element",
   "scripts": {
     "release": "npm publish",
