@@ -5,7 +5,7 @@
   "scripts": {
     "release": "npm publish",
     "prepare": "npm version patch && npm run prepare:all && npm run docs && npm run demo-build",
-    "docs": "typedoc --out docs ./src/ts --theme default --hideGenerator",
+    "docs": "typedoc --out docs ./src/ts --excludeNotExported --plugin typedoc-plugin-nojekyll",
     "prepare:all": "npm run prepare:es && npm run prepare:cjs && npm run prepare:cdn",
     "prepare:es": "tsc ./src/ts/index.ts --allowJs true --outDir ./dist/es --target es6 --moduleResolution node --declaration true --declarationDir ./dist/types --declarationMap true",
     "prepare:cjs": "tsc ./src/ts/index.ts --allowJs true --outDir ./dist/cjs --target es5 --module commonjs",
