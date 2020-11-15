@@ -239,6 +239,7 @@ export default function nodeMarquee (
 
         translateX += speed;
         let moveToEnd: (HTMLElement | false) = false;
+        let moveToEndIndex = 0;
 
         let w = 0;
         // render elements
@@ -253,20 +254,21 @@ export default function nodeMarquee (
             const elWidth = elementsWidth[i];
 
             // calulate transforms
-            const t = w - translateX;
+            const x = w - translateX;
             w += elWidth;
 
             // apply transforms
-            el.style.transform = `translate(${t}px, 0)`;
-            if (t < elWidth * -1) {
+            el.style.transform = `matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0, ${x}, 0, 0,1)`;
+            if (x < elWidth * -1) {
                 moveToEnd = el;
+                moveToEndIndex = i;
             }
 
         }
 
         if (moveToEnd) {
             elements.push(elements.splice(elements.indexOf(moveToEnd), 1)[0]);
-            translateX -= moveToEnd.clientWidth;
+            translateX -= prop.optimizeCalculation ? elementsWidth[moveToEndIndex] : moveToEnd.clientWidth;
             if (prop.optimizeCalculation) {
                 updateSizes();
             }
