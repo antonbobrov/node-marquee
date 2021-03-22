@@ -116,7 +116,7 @@ export default function nodeMarquee (
         }
         // and create them
         for (let i = 0; i < quantity - 1; i++) {
-            createElement(true, true);
+            createElement(true);
         }
 
         // update sizes of the elements
@@ -139,19 +139,13 @@ export default function nodeMarquee (
 
     function createElement (
         absolutePosition = false,
-        appendWhitespace = false,
     ) {
 
         const el = document.createElement('div');
         el.classList.add(`${className}__el`);
 
         // set text
-        if (appendWhitespace) {
-            el.innerHTML = `&nbsp;${text}`;
-        }
-        else {
-            el.innerHTML = text;
-        }
+        el.innerHTML = `&nbsp;${text}`;
 
         // apply styles
         if (absolutePosition) {
