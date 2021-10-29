@@ -1,7 +1,5 @@
 # Custom Marquee element
 
-## Documentation: https://antonbobrov.github.io/node-marquee/
-
 
 
 <br>
