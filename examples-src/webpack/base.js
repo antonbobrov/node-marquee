@@ -39,7 +39,7 @@ module.exports = merge(baseConfig, {
             ? 'assets/js/[name].js'
             : 'assets/js/[name].[contenthash].js',
         path: PATHS.pages.build,
-        publicPath: '/',
+        publicPath: '',
     },
 
     module: {
