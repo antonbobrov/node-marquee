@@ -4,6 +4,15 @@
 
 
 
+<br>
+
+### Demo: https://antonbobrov.github.io/node-marquee/
+### Documentation: https://antonbobrov.github.io/node-marquee/docs/
+
+<br>
+
+
+
 ## How to start with NPM
 ```sh
 npm install node-marquee
