@@ -1,4 +1,5 @@
 config/
+examples-build/
 examples-src/
 node_modules/
 
