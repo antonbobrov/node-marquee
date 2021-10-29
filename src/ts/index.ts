@@ -1,4 +1,4 @@
-import { selectOne, isElement, addEventListener } from 'vevet-dom';
+import { selectOne, addEventListener, createElement } from 'vevet-dom';
 import { NodeMarqueeProp, NodeMarquee } from './types';
 
 export {
@@ -6,174 +6,156 @@ export {
     NodeMarqueeProp,
 };
 
-
-
 /**
- * Custom Marquee
+ * Custom Marquee element
  */
 export default function nodeMarquee (
-    prop: NodeMarqueeProp = {},
+    argProp: NodeMarqueeProp = {},
 ): (NodeMarquee | false) {
-
-    const className = 'node-marquee';
-    let destroyed = false;
-
     // default properties
-    const DEFAULT_PROP: NodeMarqueeProp = {
-        selector: '.node-marquee',
+    const defaults: Required<NodeMarqueeProp> = {
+        parent: '#node-marquee',
         speed: 1,
+        minQuantity: 4,
         autoplay: true,
         pauseOnHover: false,
-        applyOuterStyles: true,
-        optimizeCalculation: false,
+        useParentStyles: true,
+        prependWhitespace: true,
     };
     // extend properties
-    prop = Object.assign(DEFAULT_PROP, prop);
+    const prop = Object.assign(defaults, argProp);
 
+    // states
+    const className = 'node-marquee';
 
-
-    // get the outer element
-    const OUTER = selectOne(prop.selector) as HTMLElement;
-    // return if the element doesn't exist
-    if (!isElement(OUTER)) {
+    // get parent element
+    const parent = selectOne(prop.parent) as HTMLElement;
+    if (!(parent instanceof HTMLElement)) {
         return false;
     }
-    // add the default class
-    OUTER.classList.add(className);
+    parent.classList.add(className);
 
-
-
-    // get inner text
-    let text = OUTER.innerHTML;
-
-    // quantity of elements
-    let quantity = 0;
-    let elements: HTMLElement[] = [];
-    let elementsWidth: number[] = [];
-
-    // vars
-    let translateX = 0;
+    // states
+    let isDestroyed = false;
     let isPlaying = false;
+    let progress = 0;
+    let animationFrame: (false | number) = false;
 
-    // minimum amount of text elements
-    const MIN_AMOUNT = 4;
+    // data
+    let defaultHTML = parent.innerHTML;
+    let quantity = 0;
+    let items: HTMLElement[] = [];
+    let itemWidth = 0;
 
     // events
-    let observer: false | MutationObserver = false;
+    let mutations: undefined | MutationObserver;
+    const listeners = [
+        addEventListener(window, 'resize', create),
+        addEventListener(parent, 'mouseenter', handleMouseEnter),
+        addEventListener(parent, 'mouseleave', handleMouseLeave),
+    ];
 
-
-
-    // create the marquee element
-    createMarquee();
+    // create the marquee
+    create();
 
     // set animation frame
-    let animationFrame: (false | number) = false;
     if (prop.autoplay) {
         play();
     }
 
 
 
-    // set events
-    const RESIZE_LISTENER = addEventListener(window, 'resize', createMarquee.bind(this));
-    const MOUSEENTER_LISTENER = addEventListener(OUTER, 'mouseenter', onMouseEnter.bind(this));
-    const MOUSELEAVE_LISTENER = addEventListener(OUTER, 'mouseleave', onMouseLeave.bind(this));
-
-
-
-    // Create the marquee element
-    function createMarquee () {
-
-        // disable mutation observer
-        disconnectMutationsObserver();
+    /**
+     * Create the marquee elemetnt
+     */
+    function create () {
+        // reset events
+        disconnectMutations();
 
         // clear the outer element
         quantity = 0;
-        elements = [];
-        elementsWidth = [];
-        OUTER.innerHTML = '';
+        items = [];
+        parent.innerHTML = '';
 
         // apply styles to the outer
-        if (prop.applyOuterStyles) {
-            OUTER.style.position = 'relative';
-            OUTER.style.width = '100%';
-            OUTER.style.overflow = 'hidden';
-            OUTER.style.whiteSpace = 'nowrap';
+        if (prop.useParentStyles) {
+            parent.style.position = 'relative';
+            parent.style.width = '100%';
+            parent.style.overflow = 'hidden';
+            parent.style.whiteSpace = 'nowrap';
         }
 
-        // create the first element
-        const firstEl = createElement();
-        let firstElWidth = firstEl.clientWidth;
-        if (firstElWidth <= 0) {
-            firstElWidth = window.innerWidth;
+        // create the first item and get its sizes
+        // to calculate the further quantity of inner elements
+        const firstItem = createItem();
+        itemWidth = firstItem.clientWidth;
+        if (itemWidth <= 0) {
+            itemWidth = window.innerWidth;
         }
-        // calculate how much elements we need to create in addition to the first one
-        if (firstElWidth < OUTER.clientWidth) {
-            quantity = Math.ceil(OUTER.clientWidth * 1.5 / firstElWidth);
+        if (itemWidth < parent.clientWidth) {
+            quantity = Math.ceil((parent.clientWidth + itemWidth) / itemWidth);
         }
-        if (quantity < MIN_AMOUNT) {
-            quantity = MIN_AMOUNT;
-        }
-        // and create them
-        for (let i = 0; i < quantity - 1; i++) {
-            createElement(true);
+        if (quantity < prop.minQuantity) {
+            quantity = prop.minQuantity;
         }
 
-        // update sizes of the elements
-        updateSizes();
+        // now when we know the total quantity,
+        // we can create the rest of the items
+        for (let index = 1; index < quantity; index += 1) {
+            createItem(true);
+        }
 
-        // render
-        renderElements();
-
+        // render for the first time
+        renderItems();
         // enable mutation observer
         observeMutations();
-
         // and to be sure, update sizes once more
-        if (prop.optimizeCalculation) {
-            setTimeout(() => {
-                updateSizes();
-            }, 500);
-        }
-
+        setTimeout(() => {
+            updateSizes();
+        }, 500);
     }
 
-    function createElement (
-        absolutePosition = false,
+    /**
+     * Create a single element inside the marquee
+     */
+    function createItem (
+        isAbsolute = false,
     ) {
-
-        const el = document.createElement('div');
-        el.classList.add(`${className}__el`);
-
-        // set text
-        el.innerHTML = `&nbsp;${text}`;
+        const element = createElement('div', {
+            class: `${className}__el`,
+            html: `${prop.prependWhitespace ? '&nbsp;' : ''}${defaultHTML}`,
+        });
 
         // apply styles
-        if (absolutePosition) {
-            el.style.position = 'absolute';
-            el.style.top = '0';
-            el.style.left = '0';
+        if (isAbsolute) {
+            element.style.position = 'absolute';
+            element.style.top = '0';
+            element.style.left = '0';
         }
-        el.style.display = 'inline-block';
+        element.style.display = 'inline-block';
 
-        // add the element
-        OUTER.appendChild(el);
-        elements.push(el);
+        // append the element
+        parent.appendChild(element);
+        items.push(element);
 
-        return el;
-
+        return element;
     }
 
 
 
-    // when the marquee is hovered
-    function onMouseEnter () {
+    /**
+     * Event on hover - ON
+     */
+    function handleMouseEnter () {
         if (prop.pauseOnHover) {
             pause();
         }
     }
 
-    // when the marquee is not hovered anymore
-    function onMouseLeave () {
+    /**
+     * Event on hover - OFF
+     */
+    function handleMouseLeave () {
         if (prop.pauseOnHover) {
             play();
         }
@@ -181,124 +163,117 @@ export default function nodeMarquee (
 
 
 
-    // observe changes in DOM
-    // when there happen some changes, we recreate the marquee element
-
+    /**
+     * Observe DOM content changes
+     * If a change happend inside the parent element,
+     * we recreate the marquee element
+     */
     function observeMutations () {
-
-        // observer config
+        if (mutations) {
+            return;
+        }
         const config: MutationObserverInit = {
             childList: true,
         };
-
-        // oserver callback
         const callback: MutationCallback = (mutationsList) => {
             for (const mutation of mutationsList) {
                 if (mutation.type === 'childList') {
-                    text = OUTER.innerHTML;
-                    createMarquee();
+                    defaultHTML = parent.innerHTML;
+                    create();
                 }
             }
         };
-
-        // create the observer
-        observer = new MutationObserver(callback);
-        observer.observe(OUTER, config);
-
+        mutations = new MutationObserver(callback);
+        mutations.observe(parent, config);
     }
 
-    function disconnectMutationsObserver () {
-        if (observer) {
-            observer.disconnect();
+    /**
+     * Destroy mutation observer
+     */
+    function disconnectMutations () {
+        if (mutations) {
+            mutations.disconnect();
+            mutations = undefined;
         }
     }
 
-
-
-    // Render the marquee element
-    function render () {
-
-        renderElements();
-
-        if (isPlaying) {
-            animationFrame = window.requestAnimationFrame(render.bind(this));
-        }
-
-    }
-
-    // Render the Marquee Elements
-    function renderElements (
-        speed = prop.speed,
-    ) {
-
-        translateX += speed;
-        let moveToEnd: (HTMLElement | false) = false;
-        let moveToEndIndex = 0;
-
-        let w = 0;
-        // render elements
-        for (let i = 0; i < quantity; i++) {
-
-            const el = elements[i];
-
-            // get width of the current element
-            if (!prop.optimizeCalculation) {
-                elementsWidth[i] = el.clientWidth;
-            }
-            const elWidth = elementsWidth[i];
-
-            // calulate transforms
-            const x = w - translateX;
-            w += elWidth;
-
-            // apply transforms
-            el.style.transform = `matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0, ${x}, 0, 0,1)`;
-            if (x < elWidth * -1) {
-                moveToEnd = el;
-                moveToEndIndex = i;
-            }
-
-        }
-
-        if (moveToEnd) {
-            elements.push(elements.splice(elements.indexOf(moveToEnd), 1)[0]);
-            translateX -= prop.optimizeCalculation ? elementsWidth[moveToEndIndex] : moveToEnd.clientWidth;
-            if (prop.optimizeCalculation) {
-                updateSizes();
-            }
-        }
-
-    }
-
-    // Update elements' width
+    /**
+     * Update sizes
+     */
     function updateSizes () {
-
-        if (destroyed) {
+        if (isDestroyed) {
             return;
         }
-
-        for (let i = 0; i < quantity; i++) {
-            let width = elements[i].clientWidth;
-            width = elements[i].clientWidth;
-            if (width <= 0) {
-                width = window.innerWidth;
-            }
-            elementsWidth[i] = width;
+        const width: number[] = [];
+        for (let index = 0; index < quantity; index += 1) {
+            width.push(items[index].clientWidth);
         }
-
+        itemWidth = Math.max(...width);
     }
 
 
 
-    // Start the animation frame
+    /**
+     * Render the marquee
+     */
+    function render () {
+        if (isPlaying) {
+            animationFrame = window.requestAnimationFrame(render);
+        }
+        renderItems();
+    }
+
+    /**
+     * Render inner elements
+     */
+    function renderItems (
+        speed = prop.speed,
+    ) {
+        progress -= speed;
+
+        // get total width
+        const totalWidth = itemWidth * (quantity - 1);
+
+        // render elements
+        for (let index = 0; index < quantity; index += 1) {
+            const el = items[index];
+            // calulate transforms
+            const x = wrap(
+                -itemWidth,
+                totalWidth,
+                progress + itemWidth * index,
+            );
+            // apply transforms
+            el.style.transform = `matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0, ${x}, 0, 0,1)`;
+        }
+    }
+
+    function wrap (
+        min: number, max: number, value: number,
+    ) {
+        const range = max - min;
+        return conditionalReturn(value, (val) => ((range + ((val - min) % range)) % range) + min);
+    }
+
+    function conditionalReturn (value: number, func: (val: number) => number) {
+        return value || value === 0 ? func(value) : func;
+    }
+
+
+
+    /**
+     * Play the marquee
+     */
     function play () {
         if (!animationFrame) {
             isPlaying = true;
-            animationFrame = window.requestAnimationFrame(render.bind(this));
+            animationFrame = window.requestAnimationFrame(render);
         }
     }
 
-    // Stop the animation frame
+    /**
+     * Pause the marquee
+     */
     function pause () {
         isPlaying = false;
         if (animationFrame) {
@@ -309,32 +284,28 @@ export default function nodeMarquee (
 
 
 
-    // Destroy the marquee
+    /**
+     * Destroy the marquee element
+     */
     function destroy () {
-
-        destroyed = true;
-
+        isDestroyed = true;
         pause();
-        disconnectMutationsObserver();
-
-        RESIZE_LISTENER.remove();
-        MOUSEENTER_LISTENER.remove();
-        MOUSELEAVE_LISTENER.remove();
-
-        OUTER.innerHTML = text;
-
+        disconnectMutations();
+        listeners.forEach((listener) => {
+            listener.remove();
+        });
+        parent.innerHTML = defaultHTML;
     }
 
 
 
     return {
-        play: play.bind(this),
-        pause: pause.bind(this),
+        play,
+        pause,
         isPlaying: () => isPlaying,
-        render: renderElements.bind(this),
-        recreate: createMarquee.bind(this),
-        updateSizes: updateSizes.bind(this),
-        destroy: destroy.bind(this),
+        render: renderItems,
+        recreate: create,
+        updateSizes,
+        destroy,
     };
-
 }

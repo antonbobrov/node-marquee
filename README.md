@@ -18,13 +18,13 @@ npm install node-marquee
 
 ## Example
 ```html
-<div class="node-marquee">This is a marquee element.</div>
+<div id="node-marquee">This is a marquee element.</div>
 ```
 ```js
 import nodeMarquee from 'node-marquee';
 ```
 ```js
 nodeMarquee({
-    selector: '.node-marquee'
+    selector: '#node-marquee'
 });
 ```

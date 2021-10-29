@@ -1,14 +1,12 @@
-.vscode
-
-demo/
+config/
+examples-src/
 node_modules/
-public-demo/
-webpack/
 
+.babelrc
 .eslintignore
 .eslintrc.json
 .gitignore
 .npmignore
-.stylelintrc.json
+
 package-lock.json
 tsconfig.json

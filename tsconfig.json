@@ -1,19 +1,16 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
-        "noImplicitAny": true,
-        "module": "ESNext",
-        "target": "ES6",
-        "jsx": "react",
-        "allowJs": true,
-        "noEmitOnError": false,
-        "declaration": false,
+        "target": "ESNext",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "experimentalDecorators": true
+        "module": "ESNext",
+        "moduleResolution": "node"
     },
     "exclude": [
-        "node_modules"
-    ]
+        "node_modules",
+        "build"
+    ],
 }
+

@@ -1,126 +1,72 @@
 {
     "env": {
         "browser": true,
-        "es2020": true
+        "es2021": true
     },
     "extends": [
-        "airbnb"
+        "airbnb-base"
     ],
     "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 11,
-        "sourceType": "module"
-    },
     "plugins": [
         "@typescript-eslint",
         "jsdoc"
     ],
     "rules": {
+        "linebreak-style": "off",
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "ts": "never"
+            }
+        ],
         "indent": [
             "error",
-            4
+            4,
+            {
+                "SwitchCase": 1
+            }
         ],
-        "linebreak-style": "off",
-        "padded-blocks": "off",
+        "func-names": ["error", "as-needed"],
+        "no-use-before-define": ["error", { "functions": false, "classes": false }],
+        "no-case-declarations": "off",
         "no-multiple-empty-lines": [
             "error",
             {
-                "max": 3
+                "max": 3,
+                "maxEOF": 1,
+                "maxBOF": 1
             }
         ],
+        "no-underscore-dangle": [
+            "error",
+            { "allowAfterThis": true, "allowAfterSuper": true }
+        ],
+        "space-before-function-paren": ["error", "always"],
         "lines-between-class-members": "off",
-        "max-len": [
-            "error",
-            {
-                "code": 120,
-                "comments": 100
-            }
-        ],
-        "object-property-newline": [
-            "error",
-            {
-                "allowAllPropertiesOnSameLine": false
-            }
-        ],
-        "space-before-function-paren": [
-            "error",
-            {
-                "anonymous": "always",
-                "named": "always",
-                "asyncArrow": "always"
-            }
-        ],
-        "brace-style": [
-            "error",
-            "stroustrup"
-        ],
-        "import/prefer-default-export": "off",
-        "import/extensions": [
-            "error",
-            "never"
-        ],
-        "import/no-mutable-exports": "off",
-        "import/no-duplicates": "off",
-        "global-require": "off",
-        "no-underscore-dangle": "off",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
         "no-unused-vars": "off",
-        "no-plusplus": "off",
-        "class-methods-use-this": "off",
-        "no-continue": "off",
-        "no-use-before-define": "off",
-        "no-restricted-globals": "off",
-        "no-bitwise": "off",
-        "no-param-reassign": "off",
-        "func-names": "off",
-        "no-useless-constructor": "off",
-        "no-mixed-operators": "off",
-        "no-restricted-syntax": "off",
         "@typescript-eslint/no-unused-vars": [
             "error"
         ],
-        "@typescript-eslint/ban-types": [
-            "error",
-            {
-                "types": {
-                    "Function": false
-                }
-            }
-        ],
-        "jsdoc/check-alignment": 1,
-        "jsdoc/check-examples": 0,
-        "jsdoc/check-indentation": 0,
-        "jsdoc/check-param-names": 1,
-        "jsdoc/check-syntax": 1,
-        "jsdoc/check-tag-names": 1,
-        "jsdoc/check-types": 1,
-        "jsdoc/implements-on-classes": 1,
-        "jsdoc/match-description": 0,
-        "jsdoc/newline-after-description": 0,
-        "jsdoc/no-types": 0,
-        "jsdoc/no-undefined-types": 0,
-        "jsdoc/require-description": 0,
-        "jsdoc/require-description-complete-sentence": 0,
-        "jsdoc/require-example": 0,
-        "jsdoc/require-hyphen-before-param-description": 1,
-        "jsdoc/require-jsdoc": 0,
-        "jsdoc/require-param": 0,
-        "jsdoc/require-param-description": 0,
-        "jsdoc/require-param-name": 1,
-        "jsdoc/require-param-type": 0,
-        "jsdoc/require-returns": 0,
-        "jsdoc/require-returns-check": 1,
-        "jsdoc/require-returns-description": 0,
-        "jsdoc/require-returns-type": 1,
-        "jsdoc/valid-types": 1
+        "no-restricted-syntax": "off"
     },
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ],
     "settings": {
         "import/resolver": {
             "node": {
                 "extensions": [
                     ".js",
-                    ".jsx",
-                    ".ts",
-                    ".tsx"
+                    ".ts"
                 ]
             }
         }

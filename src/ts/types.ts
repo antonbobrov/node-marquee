@@ -1,14 +1,19 @@
 export interface NodeMarqueeProp {
     /**
      * The selector of the element or the elements itself.
-     * @default '.node-marquee'
+     * @default '#node-marquee'
      */
-    selector?: HTMLElement | string;
+    parent?: HTMLElement | string;
     /**
      * The amount of pixels to move with each frame.
      * @default 1
      */
     speed?: number;
+    /**
+     * Minimal amount of inner elements
+     * @default 1
+     */
+    minQuantity?: number;
     /**
      * If you want the marquee element to start moving after its initializing.
      * @default true
@@ -20,21 +25,14 @@ export interface NodeMarqueeProp {
      */
     pauseOnHover?: boolean;
     /**
-     * If you need to apply default style to the outer element
+     * If you need to apply default style to the parent element
      * @default true
      */
-    applyOuterStyles?: boolean;
+    useParentStyles?: boolean;
     /**
-     * By default, the script copies the text and moves it. To calculate the transformations,
-     * it needs to know the width of each element.
-     * This very width is calculated with each animation frame
-     * and in some cases may influence performance.
-     * If you want to avoid this, set the property as "true", and it won't recalculate
-     * styles with each frame, though when changing styles of the marquee (f.e., font-size),
-     * the marquee must be manually recreated.
-     * @default false
+     * If need to append a whitespace before each element
      */
-    optimizeCalculation?: boolean;
+    prependWhitespace?: boolean;
 }
 
 
