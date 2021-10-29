@@ -32,6 +32,6 @@ import nodeMarquee from 'node-marquee';
 ```
 ```js
 nodeMarquee({
-    selector: '#node-marquee'
+    parent: '#node-marquee'
 });
 ```
