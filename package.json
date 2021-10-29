@@ -1,6 +1,6 @@
 {
   "name": "node-marquee",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Custom Marquee element",
   "browserslist": [
     "last 20 versions, > 0.5%, ie >= 10"
