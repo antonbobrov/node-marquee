@@ -15,7 +15,7 @@
     "docs": "typedoc --out examples-build/docs ./src/ts --theme default --hideGenerator",
     "gh-pages": "git add demo/public/docs/* && git commit -m \"Update github pages\" && git subtree push --prefix examples-build/ origin gh-pages",
     "lint:js": "eslint . --ext .ts,.js",
-    "prepare": "npm run lint:js && npm run prepare:all && npm run pages-build && run docs && npm run gh-pages",
+    "prepare": "npm run lint:js && npm run prepare:all && npm run pages-build && npm run docs && npm run gh-pages",
     "release": "npm version patch && npm publish"
   },
   "main": "./build/cjs/index.js",
