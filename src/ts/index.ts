@@ -21,6 +21,7 @@ export default function nodeMarquee (
         pauseOnHover: false,
         useParentStyles: true,
         prependWhitespace: true,
+        resize: true,
     };
     // extend properties
     const prop = Object.assign(defaults, argProp);
@@ -36,6 +37,10 @@ export default function nodeMarquee (
     parent.classList.add(className);
 
     // states
+    const viewportSizes = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+    };
     let isDestroyed = false;
     let isPlaying = false;
     let progress = 0;
@@ -50,7 +55,7 @@ export default function nodeMarquee (
     // events
     let mutations: undefined | MutationObserver;
     const listeners = [
-        addEventListener(window, 'resize', create),
+        addEventListener(window, 'resize', handleResize),
         addEventListener(parent, 'mouseenter', handleMouseEnter),
         addEventListener(parent, 'mouseleave', handleMouseLeave),
     ];
@@ -141,6 +146,37 @@ export default function nodeMarquee (
         return element;
     }
 
+
+    /**
+     * Event on window resize
+     */
+    function handleResize () {
+        if (prop.resize === false) {
+            return;
+        }
+
+        const prevViewportWidth = viewportSizes.width;
+        const prevViewportHeight = viewportSizes.height;
+        const newViewportWidth = window.innerWidth;
+        const newViewportHeight = window.innerHeight;
+        viewportSizes.width = newViewportWidth;
+        viewportSizes.height = newViewportHeight;
+
+        if (
+            typeof prop.resize === 'string'
+        ) {
+            if (
+                (prop.resize === 'w' && (prevViewportWidth !== newViewportWidth))
+                || (prop.resize === 'h' && (prevViewportHeight !== newViewportHeight))
+            ) {
+                create();
+                return;
+            }
+            return;
+        }
+
+        create();
+    }
 
 
     /**

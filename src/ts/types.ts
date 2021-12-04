@@ -33,6 +33,16 @@ export interface NodeMarqueeProp {
      * If need to append a whitespace before each element
      */
     prependWhitespace?: boolean;
+    /**
+     * When the window is resized, the marquee element is recreated
+     * for its sizes correspond to the current size of the window.
+     * This property allow you to decide what viewport changes to react. <br>
+     * true - update on each resize <br>
+     * 'w' - update on width resize only <br>
+     * 'h' - update on height resize only <br>
+     * false - to not update on resize
+     */
+    resize?: boolean | 'w' | 'h';
 }
 
 
