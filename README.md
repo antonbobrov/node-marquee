@@ -1,5 +1,6 @@
 # Custom Marquee element
 
+## This package will no longer be supported. For a better experience use [Vevet.Marquee](https://github.com/antonbobrov/vevet)
 
 
 <br>
